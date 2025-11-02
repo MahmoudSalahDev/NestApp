@@ -19,6 +19,20 @@ It includes email/password login, Google (Gmail) authentication, and JWT-based p
 - **Password Management**
   - Forget/Reset password flow with token support.
 
+### 🧾 User Profile
+- Added new API endpoint to **retrieve the user profile**.
+- Returns the authenticated user’s data using access token verification.
+- Protected by `AuthenticationGuard` and `AuthorizationGuard`.
+
+### 🧱 Guards & Decorators
+- Implemented custom guards:
+  - **AuthenticationGuard** – validates JWT tokens.
+  - **AuthorizationGuard** – checks user roles.
+- Added composite decorator `@Auth()` combining:
+  - Token type selection (`access` / `refresh`)
+  - Role-based access (`user`, `admin`, etc.)
+  - Automatic guard usage
+
 ## 🧠 Tech Stack
 **NestJS – backend framework**  
 
@@ -27,10 +41,6 @@ It includes email/password login, Google (Gmail) authentication, and JWT-based p
 **Google Auth Library – Gmail login verification**  
 
 **MongoDB / Mongoose – user storage**  
- 
-**MongoDB / Mongoose – user storage**  
-
-
 
 ## ⚙️ Installation & Setup
 
@@ -39,6 +49,7 @@ It includes email/password login, Google (Gmail) authentication, and JWT-based p
 ```bash
 git clone https://github.com/MahmoudSalahDev/NestApp
 cd NestApp
+
 
 
 ### 2. Install dependencies:

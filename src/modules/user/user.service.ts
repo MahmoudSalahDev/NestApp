@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { UserRepo } from 'src/DB';
-import { AddUserDto, ForgetPasswordDto, ResetPasswordDto } from './user.dto';
+import { AddUserDto, ForgetPasswordDto, ResendOtpDto, ResetPasswordDto } from './user.dto';
 import { Compare, Hash } from 'src/utils/hash';
 import { generateOTP } from 'src/service/sendEmail';
 import { eventEmmiter } from 'src/utils/event';
@@ -67,6 +67,34 @@ export class UserService {
         );
 
         return { message: 'Email confirmed successfully 👌' };
+    }
+
+    async resendOtp(body: ResendOtpDto) {
+        const { email } = body;
+
+        // Check if user exists
+        const user = await this.userRepo.findOne({
+            email,
+            confirmed: { $exists: false }
+        });
+        if (!user) {
+            throw new BadRequestException('User not found! or already confirmed!!');
+        }
+
+        // Generate new OTP
+        const otp = await generateOTP();
+        const hashedOtp = await Hash(String(otp));
+
+        // Update user OTP
+        await this.userRepo.updateOne(
+            { email },
+            { $set: { otp: hashedOtp } }
+        );
+
+        // Emit the OTP email again
+        eventEmmiter.emit('confirmEmail', { email, otp });
+
+        return { message: 'OTP resent successfully' };
     }
 
 
@@ -197,9 +225,9 @@ export class UserService {
                 email,
                 confirmed: email_verified,
                 profileImage: picture,
-                password: uuidv4(), 
+                password: uuidv4(),
                 provider: UserProvider.google,
-                age: 18, 
+                age: 18,
             });
         }
 

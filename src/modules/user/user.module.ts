@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
@@ -9,6 +9,7 @@ import { RevokeToken, RevokeTokenSchema } from 'src/DB/Models/revokeToken';
 import { UserRepo } from 'src/DB';
 import { TokenService } from 'src/utils/token';
 import { JwtModule } from '@nestjs/jwt';
+// import { AuthenticationMiddleware, tokenType } from 'src/common/middleware';
 
 @Module({
   imports: [
@@ -35,4 +36,12 @@ import { JwtModule } from '@nestjs/jwt';
     TokenService, 
   ],
 })
-export class UserModule {}
+export class UserModule {
+  // configure(consumer: MiddlewareConsumer) {
+  //   consumer
+  //     .apply(tokenType(),AuthenticationMiddleware)
+  //     .forRoutes(
+  //       {path:'users/profile',method:RequestMethod.ALL}
+  //     );
+  // }
+}

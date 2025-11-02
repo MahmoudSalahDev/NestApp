@@ -57,6 +57,12 @@ export class ConfirmEmailDto {
     otp: string;
 }
 
+export class ResendOtpDto {
+    @IsEmail()
+    @IsNotEmpty()
+    email: string;
+}
+
 export class ForgetPasswordDto {
     @IsEmail()
     @IsNotEmpty()

@@ -1,8 +1,9 @@
-import { Body, Controller, Get, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Post, Res } from '@nestjs/common';
 import type { Response } from 'express';
 import { UserService } from './user.service';
-import { AddUserDto, ConfirmEmailDto, ForgetPasswordDto, ResetPasswordDto } from './user.dto';
-import { JwtAuthGuard } from 'src/utils/jwt-auth.guard';
+import { AddUserDto, ConfirmEmailDto, ForgetPasswordDto, ResendOtpDto, ResetPasswordDto } from './user.dto';
+import { Auth, User } from 'src/common/decorators';
+import type { HUserDocument } from 'src/DB';
 /* eslint-disable */
 
 @Controller('users')
@@ -22,6 +23,11 @@ export class UserController {
         const { email, otp } = body;
         const result = await this.userService.confirmEmail(email, otp);
         return res.status(HttpStatus.OK).json(result);
+    }
+
+    @Post('resend-otp')
+    async resendOtp(@Body() body: ResendOtpDto) {
+        return this.userService.resendOtp(body);
     }
 
     @Post('sign-in')
@@ -63,5 +69,12 @@ export class UserController {
         return res.status(HttpStatus.OK).json(result);
     }
 
-    
+    @Auth()
+    @Get('profile')
+    async profile(
+        @User() user:HUserDocument
+    ) {
+        return { message: 'profile' ,user}
+        // return res.status(HttpStatus.OK).json(result);  
+    }
 }

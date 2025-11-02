@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { RevokeTokenRepository } from '../DB/repos/revokeToken.repository';
 import { UserRepo } from 'src/DB';
+import { TokenType } from 'src/common/enums';
 
 @Injectable()
 export class TokenService {
@@ -65,5 +66,29 @@ export class TokenService {
         // }
 
         return { decoded, user };
+    }
+
+    async GetSignature(prefix: string, tokenType: TokenType = TokenType.access): Promise<string | null> {
+        if (tokenType === TokenType.access) {
+            if (prefix === process.env.BEARER_USER || "Bearer") {
+                return process.env.ACCESS_TOKEN_USER!;
+            } else if (prefix === process.env.BEARER_ADMIN || "Admin") {
+                return process.env.ACCESS_TOKEN_ADMIN!;
+            } else {
+                return null;
+            }
+        }
+
+        if (tokenType === TokenType.refresh) {
+            if (prefix === process.env.BEARER_USER) {
+                return process.env.REFRESH_TOKEN_USER!;
+            } else if (prefix === process.env.BEARER_ADMIN) {
+                return process.env.REFRESH_TOKEN_ADMIN!;
+            } else {
+                return null;
+            }
+        }
+
+        return null;
     }
 }
