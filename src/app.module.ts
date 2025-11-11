@@ -5,6 +5,11 @@ import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './modules/user/user.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
+import { S3Service } from './service/s3.service';
+import { BrandModule } from './modules/brand/brand.module';
+import { CategoryModule } from './modules/category/category.module';
+import { ProductModule } from './modules/product/product.module';
+import { SubCategoryModule } from './modules/subCategory/subCategory.module';
 
 @Module({
   imports: [
@@ -13,6 +18,10 @@ import { Connection } from 'mongoose';
       isGlobal: true,
     }),
     UserModule,
+    BrandModule,
+    CategoryModule,
+    SubCategoryModule,
+    ProductModule,
     MongooseModule.forRoot(process.env.MONGO_URL as string, {
       onConnectionCreate: (connection: Connection) => {
         connection.on('connected', () => console.log('DB connected successfully😁'));
@@ -26,7 +35,7 @@ import { Connection } from 'mongoose';
     })
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService , S3Service],
 })
 export class AppModule {
   

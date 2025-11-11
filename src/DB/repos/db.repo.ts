@@ -82,4 +82,11 @@ export class DBRepo<TDocument> {
     async deleteMany(filter: RootFilterQuery<TDocument>): Promise<DeleteResult> {
         return await this.model.deleteMany(filter);
     }
+
+     async findOneAndDelete(
+        filter: RootFilterQuery<TDocument>,
+        options?: QueryOptions<TDocument>
+    ): Promise<HydratedDocument<TDocument> | null> {
+        return this.model.findOneAndDelete(filter, options);
+    }
 }

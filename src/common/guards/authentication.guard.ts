@@ -36,7 +36,7 @@ export class AuthenticaionGuard implements CanActivate {
       const [prefix, token] = authorization?.split(" ") || []
 
       if (!prefix || !token) {
-        throw new BadRequestException("Token not exist!sdas")
+        throw new BadRequestException("Token not exist!")
       }
       const signature = await this.tokenService.GetSignature(prefix,tokenType);
 

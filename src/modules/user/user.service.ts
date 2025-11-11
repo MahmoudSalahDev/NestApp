@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
-import { UserRepo } from 'src/DB';
+import { HUserDocument, UserRepo } from 'src/DB';
 import { AddUserDto, ForgetPasswordDto, ResendOtpDto, ResetPasswordDto } from './user.dto';
 import { Compare, Hash } from 'src/utils/hash';
 import { generateOTP } from 'src/service/sendEmail';
@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from "uuid";
 import { UserProvider, UserRole } from 'src/common/enums';
 import { TokenService } from 'src/utils/token';
 import { OAuth2Client, TokenPayload } from 'google-auth-library';
+import { S3Service } from 'src/service/s3.service';
 /* eslint-disable */
 
 
@@ -16,6 +17,7 @@ export class UserService {
     constructor(
         private readonly userRepo: UserRepo,
         private readonly tokenService: TokenService,
+        private readonly s3Service: S3Service,
     ) { }
 
 
@@ -261,6 +263,17 @@ export class UserService {
             refresh_token,
             user,
         };
+    }
+
+    uploadFile (file:Express.Multer.File , user:HUserDocument){
+
+        return this.s3Service.uploadFile({
+            file,
+            path:`users/${user._id}`,
+        })
+
+
+
     }
 
 

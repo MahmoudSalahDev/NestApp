@@ -9,6 +9,8 @@ import { RevokeToken, RevokeTokenSchema } from 'src/DB/Models/revokeToken';
 import { UserRepo } from 'src/DB';
 import { TokenService } from 'src/utils/token';
 import { JwtModule } from '@nestjs/jwt';
+import { S3Service } from 'src/service/s3.service';
+
 // import { AuthenticationMiddleware, tokenType } from 'src/common/middleware';
 
 @Module({
@@ -18,22 +20,24 @@ import { JwtModule } from '@nestjs/jwt';
       { name: RevokeToken.name, schema: RevokeTokenSchema },
     ]),
     JwtModule.register({
-      global: true, // 👈 makes JwtService available everywhere
+      global: true,
       secret: process.env.ACCESS_TOKEN_USER || 'defaultSecret',
       signOptions: { expiresIn: '1h' },
     }),
+    
   ],
   controllers: [UserController],
   providers: [
     UserService,
     UserRepo,
     RevokeTokenRepository,
-    TokenService, 
+    TokenService,
+    S3Service,
   ],
   exports: [
     UserRepo,
     RevokeTokenRepository,
-    TokenService, 
+    TokenService,
   ],
 })
 export class UserModule {

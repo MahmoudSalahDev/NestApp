@@ -1,10 +1,15 @@
-import { Body, Controller, Get, HttpStatus, Post, Res } from '@nestjs/common';
+/* eslint-disable */
+import {  Body, Controller, Get, HttpStatus, ParseFilePipe, Post, Res, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
 import type { Response } from 'express';
 import { UserService } from './user.service';
 import { AddUserDto, ConfirmEmailDto, ForgetPasswordDto, ResendOtpDto, ResetPasswordDto } from './user.dto';
 import { Auth, User } from 'src/common/decorators';
 import type { HUserDocument } from 'src/DB';
-/* eslint-disable */
+import { FileFieldsInterceptor, FileInterceptor,  } from '@nestjs/platform-express';
+import { multerLocal } from 'src/utils/multer';
+import { multerCloud } from 'src/utils/multer/multer.cloud';
+import { fileValidation } from 'src/utils/multer/multer.fileVal';
+
 
 @Controller('users')
 export class UserController {
@@ -72,9 +77,21 @@ export class UserController {
     @Auth()
     @Get('profile')
     async profile(
-        @User() user:HUserDocument
+        @User() user: HUserDocument
     ) {
-        return { message: 'profile' ,user}
+        return { message: 'profile', user }
         // return res.status(HttpStatus.OK).json(result);  
     }
+
+
+    @Auth()
+    @Post('upload')
+    @UseInterceptors(FileInterceptor("attachment",multerCloud({fileTypes: fileValidation.image})))
+    async uploadFile(@UploadedFile() file: Express.Multer.File,@User() user:HUserDocument) {
+        // console.log(file);
+        // return { message: "done ", file }
+        const url =  await this.userService.uploadFile(file , user)
+        return {message: "done" , url}
+    }
+
 }
