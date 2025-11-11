@@ -33,6 +33,36 @@ It includes email/password login, Google (Gmail) authentication, and JWT-based p
   - Role-based access (`user`, `admin`, etc.)
   - Automatic guard usage
 
+### 🛍️ Brand Management
+- **Create Brand** – add new brand.
+- **Update Brand** – modify brand details.
+- **Update Brand Image** – upload/update brand image.
+- **Freeze Brand** – soft delete a brand.
+- **Restore Brand** – undo freeze action.
+- **Delete Brand** – permanently delete brand.
+- **Get All Brands** – retrieve paginated list of brands.
+
+### 🏷️ Category Management
+- **Create Category** – add new category.
+- **Update Category** – modify category details.
+- **Update Category Image** – upload/update category image.
+- **Freeze Category** – soft delete a category.
+- **Restore Category** – undo freeze action.
+- **Delete Category** – permanently delete category.
+- **Get All Categories** – retrieve paginated list of categories.
+
+### 🗂️ SubCategory Management
+- **Create SubCategory** – add new subcategory.
+- **Update SubCategory** – modify subcategory details.
+- **Update SubCategory Image** – upload/update subcategory image.
+- **Freeze SubCategory** – soft delete a subcategory.
+- **Restore SubCategory** – undo freeze action.
+- **Delete SubCategory** – permanently delete subcategory.
+- **Get All SubCategories** – retrieve paginated list of subcategories.
+
+### 🛒 Product Management
+- **Create Product** – add new product with optional image upload and category/subcategory assignment.
+
 ## 🧠 Tech Stack
 **NestJS – backend framework**  
 
@@ -49,6 +79,7 @@ It includes email/password login, Google (Gmail) authentication, and JWT-based p
 ```bash
 git clone https://github.com/MahmoudSalahDev/NestApp
 cd NestApp
+
 
 
 
