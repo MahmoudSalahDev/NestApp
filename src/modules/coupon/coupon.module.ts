@@ -1,39 +1,32 @@
 /* eslint-disable */
 
 import { Module } from '@nestjs/common';
-
+import { CouponController } from './coupon.controller';
+import { CouponService } from './coupon.service';
 import { TokenService } from 'src/utils/token';
 import { JwtService } from '@nestjs/jwt';
-import { UserModel, UserRepo, RevokeTokenSchema, RevokeToken, ProductModel, ProductRepo, BrandRepo, CategoryRepo, CategoryModel, BrandModel } from 'src/DB';
+import { CouponRepo, CouponModel, UserModel, UserRepo, RevokeTokenSchema, RevokeToken } from 'src/DB';
 import { MongooseModule } from '@nestjs/mongoose';
 import { RevokeTokenRepository } from 'src/DB/repos/revokeToken.repository';
 import { S3Service } from 'src/service/s3.service';
-import { ProductController } from './product.controller';
-import { ProductService } from './product.service';
 
 @Module({
   imports: [
     UserModel,
-    ProductModel,
-    CategoryModel,
-    BrandModel,
-    UserModel,
+    CouponModel,
     MongooseModule.forFeature([
       { name: RevokeToken.name, schema: RevokeTokenSchema }, 
     ]),
   ],
-  controllers: [ProductController],
+  controllers: [CouponController],
   providers: [
-    ProductService,
+    CouponService,
     TokenService,
     JwtService,
     UserRepo,
-    ProductRepo,
+    CouponRepo,
     RevokeTokenRepository,
-    S3Service,
-    BrandRepo,
-    CategoryRepo,
-    UserRepo
+    S3Service
   ],
 })
-export class ProductModule {}
+export class CouponModule {}

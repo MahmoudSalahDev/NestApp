@@ -2,7 +2,7 @@
 
 import { PartialType } from "@nestjs/mapped-types";
 import { Type } from "class-transformer";
-import { IsMongoId, IsNotEmpty, IsNumber, IsOptional, IsString, Max, MaxLength, Min, MinLength } from "class-validator";
+import { IsArray, IsMongoId, IsNotEmpty, IsNumber, IsOptional, IsString, Max, MaxLength, Min, MinLength, ValidateNested } from "class-validator";
 import { Types } from "mongoose";
 import { AtLeastOne } from "src/common/decorators";
 
@@ -27,12 +27,12 @@ export class CreateProductDto {
 
     @IsNumber()
     @IsNotEmpty()
-    @Type(()=>Number)
+    @Type(() => Number)
     price: number
 
     @IsNumber()
     @IsNotEmpty()
-    @Type(()=>Number)
+    @Type(() => Number)
     @Min(1)
     @Max(100)
     @IsOptional()
@@ -40,13 +40,13 @@ export class CreateProductDto {
 
     @IsNumber()
     @IsNotEmpty()
-    @Type(()=>Number)
+    @Type(() => Number)
     @Min(1)
     quantity: number
 
     @IsNumber()
     @IsNotEmpty()
-    @Type(()=>Number)
+    @Type(() => Number)
     stock: number
 
     @IsMongoId()
@@ -61,4 +61,41 @@ export class CreateProductDto {
     // @IsNotEmpty()
     // subCategory: Types.ObjectId
 
+    @IsOptional()
+    @IsArray()
+    @ValidateNested({ each: true })
+    @Type(() => ProductVariantDto)
+    variants?: ProductVariantDto[];
+
+}
+
+
+@AtLeastOne(["name", "description", "price", "discount", "quantity", "stock", "brand", "category"])
+export class updateProductDto extends PartialType(CreateProductDto) {
+
+
+
+}
+
+
+export class ParamDto {
+    @IsMongoId()
+    @IsNotEmpty()
+    id: Types.ObjectId
+}
+
+export class ProductVariantDto {
+    @IsString()
+    @IsNotEmpty()
+    name: string;
+
+    @IsNumber()
+    @Type(() => Number)
+    @IsOptional()
+    price?: number;
+
+    @IsNumber()
+    @Type(() => Number)
+    @IsOptional()
+    quantity?: number;
 }

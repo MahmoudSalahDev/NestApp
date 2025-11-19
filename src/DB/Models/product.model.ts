@@ -4,6 +4,18 @@ import { HydratedDocument, Types, UpdateQuery } from "mongoose";
 import slugify from "slugify";
 
 
+export class ProductVariant {
+    @Prop({ required: true, type: String })
+    name: string; // e.g., "Red - L"
+
+    @Prop({ type: Number })
+    price?: number; // optional variant-specific price
+
+    @Prop({ type: Number, default: 0 })
+    quantity?: number; // stock for this variant
+}
+
+
 @Schema({ timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true }, strictQuery: true })
 export class Product {
 
@@ -19,16 +31,16 @@ export class Product {
     @Prop({ required: true, type: String })
     mainImage: string
 
-    @Prop({  type: [String] })
+    @Prop({ type: [String] })
     subImages: string[]
 
     @Prop({ required: true, type: Number })
     price: number
 
-    @Prop({ type: Number , min:1 , max:100 })
+    @Prop({ type: Number, min: 1, max: 100 })
     discount: number
 
-    @Prop({ type: Number , min:1  })
+    @Prop({ type: Number, min: 1 })
     quantity: number
 
     @Prop({ type: Number })
@@ -45,6 +57,9 @@ export class Product {
 
     @Prop({ required: true, type: Types.ObjectId, ref: "Category" })
     category: Types.ObjectId
+
+    @Prop({ type: [ProductVariant], default: [] })
+    variants: ProductVariant[];
 
     // @Prop({ required: true, type: Types.ObjectId, ref: "SubCategory" })
     // subCategory: Types.ObjectId

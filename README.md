@@ -62,8 +62,21 @@ It includes email/password login, Google (Gmail) authentication, and JWT-based p
 
 ### 🛒 Product Management
 - **Create Product** – add new product with optional image upload and category/subcategory assignment.
+- **Update Product** – modify product details including price, discount, stock, variants.
+- **Add to Wishlist** – add product to user wishlist.
+- **Remove from Wishlist** – remove product from user wishlist.
 
-## 🧠 Tech Stack
+### 🛍️ Cart Management
+- **Create Cart** – initialize a cart for a user.
+- **Add to Cart** – add products to the cart.
+- **Remove from Cart** – remove a product from the cart.
+- **Update Quantity** – update quantity of a product in the cart.
+
+### 🏷️ Coupon Management
+- **Create Coupon** – add new coupon with code, amount, and valid date range.
+- **Update Coupon** – update coupon details including code, amount, and dates.
+
+### 🧠 Tech Stack
 **NestJS – backend framework**  
 
 **@nestjs/jwt – JWT handling**  

@@ -10,6 +10,8 @@ import { BrandModule } from './modules/brand/brand.module';
 import { CategoryModule } from './modules/category/category.module';
 import { ProductModule } from './modules/product/product.module';
 import { SubCategoryModule } from './modules/subCategory/subCategory.module';
+import { CartModule } from './modules/cart/cart.module';
+import { CouponModule } from './modules/coupon/coupon.module';
 
 @Module({
   imports: [
@@ -22,6 +24,8 @@ import { SubCategoryModule } from './modules/subCategory/subCategory.module';
     CategoryModule,
     SubCategoryModule,
     ProductModule,
+    CartModule,
+    CouponModule,
     MongooseModule.forRoot(process.env.MONGO_URL as string, {
       onConnectionCreate: (connection: Connection) => {
         connection.on('connected', () => console.log('DB connected successfully😁'));

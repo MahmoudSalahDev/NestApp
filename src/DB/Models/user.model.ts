@@ -1,5 +1,5 @@
 import { MongooseModule, Prop, Schema, SchemaFactory, Virtual } from "@nestjs/mongoose";
-import { HydratedDocument } from "mongoose";
+import { HydratedDocument, Types } from "mongoose";
 import { UserGender, UserProvider, UserRole } from "src/common/enums";
 /* eslint-disable */
 
@@ -66,6 +66,9 @@ export class User {
 
     @Prop({ type: String })
     profileImage: string;
+
+    @Prop({ type: [{ type: Types.ObjectId, ref: 'Product' }] })
+    wishList: Types.ObjectId[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
